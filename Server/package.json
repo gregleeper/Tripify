@@ -1,0 +1,38 @@
+{
+  "name": "transportation_requests",
+  "version": "1.0.0",
+  "description": "Transportation request workflow for USD 210",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm run start --prefix cd ../client/",
+    "test": "jest --watchAll",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Greg Leeper",
+  "license": "ISC",
+  "dependencies": {
+    "@passport-next/passport-google-oauth2": "^1.0.0",
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
+    "config": "^3.0.0",
+    "cookie-session": "^2.0.0-beta.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "express-async-errors": "^3.1.1",
+    "joi": "^14.3.0",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.3.15",
+    "passport": "^0.4.0",
+    "winston": "^2.4.4",
+    "winston-mongodb": "^2.*"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.7"
+  }
+}
