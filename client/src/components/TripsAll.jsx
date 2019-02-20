@@ -7,14 +7,18 @@ import { Link } from "react-router-dom";
 import Table from "./table";
 import { connect } from "react-redux";
 import * as actions from "../actions/index";
-import * as moment from "moment";
 import Moment from "react-moment";
+import * as moment from "moment";
 import DateTimePicker from "react-widgets/lib/DateTimePicker";
+import "react-widgets/dist/css/react-widgets.css";
 import momentLocalizer from "react-widgets-moment";
 
+// 198500
+
+// Moment.locale("en");
 momentLocalizer();
 
-class TripsUser extends Component {
+class TripsAll extends Component {
   state = {
     pageSize: 5,
     currentPage: 1,
@@ -25,8 +29,7 @@ class TripsUser extends Component {
   columns = [
     {
       path: "title",
-      label: "Trip Title",
-      content: trip => <Link to={`/trips/edit/${trip._id}`}>{trip.title}</Link>
+      label: "Trip Title"
     },
     { path: "destination", label: "Destination" },
     {
@@ -39,33 +42,12 @@ class TripsUser extends Component {
         </Moment>
       )
     },
-    { path: "tripOwner.name", label: "Created By" },
-    { path: "supervisor.name", label: "Supervisor" },
-    {
-      path: "isApproved",
-      label: "Approval Status",
-      content: trip => {
-        if (trip.isApproved) return <div>Approved</div>;
-        else if (!trip.isApproved && !trip.isDenied) {
-          return <div>Needs Review</div>;
-        } else return <div>Denied</div>;
-      }
-    },
-
-    {
-      path: "isArranged",
-      label: "Arranged",
-      content: trip => <div>{trip.isArranged ? "Yes" : "No"}</div>
-    }
+    { path: "tripOwner.name", label: "Created By" }
   ];
 
   componentDidMount() {
-    this.props.fetchUserTrips();
+    this.props.fetchAllTrips();
   }
-
-  handleDelete = trip => {
-    this.props.deleteTrip(trip._id);
-  };
 
   handleSearch = query => {
     this.setState({ searchQuery: query, selectedDate: null, currentPage: 1 });
@@ -79,16 +61,16 @@ class TripsUser extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleVehicleTypeSelect = type => {
-    this.setState({ selectedType: type, currentPage: 1 });
-  };
-
   handleSelectedDate = date => {
     this.setState({ selectedDate: date, currentPage: 1 });
   };
 
   handleEmptyDate = () => {
     this.setState({ selectedDate: null, currentPage: 1 });
+  };
+
+  handleVehicleTypeSelect = type => {
+    this.setState({ selectedType: type, currentPage: 1 });
   };
 
   getPagedData() {
@@ -187,10 +169,10 @@ class TripsUser extends Component {
 }
 
 const mapStateToProps = state => {
-  return { trips: Object.values(state.trips) };
+  return { trips: Object.values(state.allTrips) };
 };
 
 export default connect(
   mapStateToProps,
   actions
-)(TripsUser);
+)(TripsAll);

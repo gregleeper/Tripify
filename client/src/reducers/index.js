@@ -11,11 +11,14 @@ import driversReducer from "./driversReducer";
 import driverTripsReducer from "./driverTripsReducer";
 import supervisorTripsReducer from "./supervisorTripsReducer";
 import adminTripsReducer from "./adminTripsReducer";
+import organizationsReducer from "./organizationsReducer";
+import allTripsReducer from "./allTripsReducer";
 
 export default combineReducers({
   auth: authReducer,
   form: reduxForm,
   trips: tripsReducer,
+  allTrips: allTripsReducer,
   driverTrips: driverTripsReducer,
   supervisorTrips: supervisorTripsReducer,
   adminTrips: adminTripsReducer,
@@ -24,5 +27,6 @@ export default combineReducers({
   drivers: driversReducer,
   vehicles: vehichlesReducer,
   vehicleTypes: vehicleTypesReducer,
-  vTypes: vTypesForVehPage
+  vTypes: vTypesForVehPage,
+  organizations: organizationsReducer
 });

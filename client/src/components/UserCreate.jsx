@@ -13,7 +13,7 @@ class UserCreate extends Component {
     return (
       <div>
         <h3 style={{ textAlign: "center", marginTop: "2em" }}>Create User</h3>
-        <UserForm onSubmit={this.handleSubmit} />
+        <UserForm onSubmit={this.onSubmit} />
       </div>
     );
   }

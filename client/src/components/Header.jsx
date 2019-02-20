@@ -54,6 +54,14 @@ class Header extends Component {
     }
   }
 
+  renderAllTrips() {
+    return (
+      <Nav.Link href="/trips/all" className="nav-item nav-link">
+        All Trips
+      </Nav.Link>
+    );
+  }
+
   renderAdmin() {
     if (this.props.auth && this.props.auth.isAdmin) {
       return (
@@ -62,6 +70,9 @@ class Header extends Component {
           <NavDropdown.Item href="/vehicles">Vehicles</NavDropdown.Item>
           <NavDropdown.Item href="/vehicletypes">
             Vehicle Types
+          </NavDropdown.Item>
+          <NavDropdown.Item href="/organizations">
+            Organizations
           </NavDropdown.Item>
           <NavDropdown.Item href="/users">Users</NavDropdown.Item>
         </NavDropdown>
@@ -138,6 +149,7 @@ class Header extends Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             {this.renderMyTrips()}
+            {this.renderAllTrips()}
             {this.renderAdmin()}
             {this.renderSup()}
             {this.renderDriver()}

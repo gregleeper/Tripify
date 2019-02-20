@@ -54,7 +54,7 @@ class TripApprove extends Component {
                   <dt className="mt-4">Physical Address: </dt>
                   <dd>{trip.physicalAddress}</dd>
                   <dt className="mt-4">Organization: </dt>
-                  <dd>{trip.organization}</dd>
+                  <dd>{trip.organization.name}</dd>
                   <dt className="mt-4">Number of Primary Vehicles: </dt>
                   <dd>{trip.numberOfPrimaryVehicles}</dd>
                   <dt className="mt-4">Number of Support Vehicles Needed: </dt>

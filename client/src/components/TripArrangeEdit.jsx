@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 import TripArrange from "./TripArrange";
-import { faObjectGroup } from "@fortawesome/free-solid-svg-icons";
 
 class TripArrangeEdit extends Component {
   componentDidMount() {

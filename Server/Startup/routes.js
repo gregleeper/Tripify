@@ -6,6 +6,7 @@ const trips = require("../routes/api/trips");
 const users = require("../routes/api/users");
 const vehicles = require("../routes/api/vehicles");
 const vehicleTypes = require("../routes/api/vehicleTypes");
+const organizations = require("../routes/api/organizations");
 const approvals = require("../routes/api/approvals");
 const drivers = require("../routes/api/drivers");
 const express = require("express");
@@ -27,6 +28,7 @@ module.exports = function(app) {
   app.use("/api/auth", auth);
   app.use("/api/approvals", approvals);
   app.use("/api/drivers", drivers);
+  app.use("/api/organizations", organizations);
 
   // app.get(
   //   "/auth/google",

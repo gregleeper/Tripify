@@ -8,6 +8,11 @@ import Table from "./table";
 import { connect } from "react-redux";
 import * as actions from "../actions/index";
 import Moment from "react-moment";
+import * as moment from "moment";
+import DateTimePicker from "react-widgets/lib/DateTimePicker";
+import momentLocalizer from "react-widgets-moment";
+
+momentLocalizer();
 
 class Trips extends Component {
   state = {
@@ -53,6 +58,15 @@ class Trips extends Component {
       path: "isArranged",
       label: "Arranged",
       content: trip => <div>{trip.isArranged ? "Yes" : "No"}</div>
+    },
+    {
+      path: "isComplete",
+      label: "Completed",
+      content: trip => (
+        <Link to={`/trips/admin/complete/${trip._id}`}>
+          <div>{trip.isComplete ? "Yes" : "No"}</div>
+        </Link>
+      )
     }
   ];
 
@@ -82,6 +96,14 @@ class Trips extends Component {
     this.setState({ selectedType: type, currentPage: 1 });
   };
 
+  handleSelectedDate = date => {
+    this.setState({ selectedDate: date, currentPage: 1 });
+  };
+
+  handleEmptyDate = () => {
+    this.setState({ selectedDate: null, currentPage: 1 });
+  };
+
   getPagedData() {
     const { trips } = this.props;
     const {
@@ -102,8 +124,11 @@ class Trips extends Component {
               t.title.toLowerCase().includes(searchQuery.toLowerCase())
           )
       );
-    else if (selectedDate)
-      filtered = trips.filter(t => t.departTime === selectedDate);
+    else if (selectedDate) {
+      filtered = trips.filter(t =>
+        moment(t.departTime).isSame(selectedDate, "day")
+      );
+    }
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -130,6 +155,20 @@ class Trips extends Component {
               value={searchQuery}
               onChange={this.handleSearch}
               placeholder="Search by title..."
+            />
+          </div>
+          <div className="col mt-3">
+            <DateTimePicker
+              time={false}
+              format="MMM DD, YYYY"
+              value={this.state.selectedDate}
+              onChange={this.handleSelectedDate}
+              placeholder="Filter By Date..."
+              onKeyPress={e => {
+                if (e.key === "Enter") {
+                  if (e.target.value === "") this.handleEmptyDate();
+                }
+              }}
             />
           </div>
           <div className="col mt-3" />

@@ -8,8 +8,11 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import Header from "./components/Header";
 import Logout from "./components/logout";
 import UserCreate from "./components/UserCreate";
-//import AppNavbar from "./components/AppNavbar";
+import Organizations from "./components/Organizations";
+import OrganizationCreate from "./components/OrganizationCreate";
+import OrganizationEdit from "./components/OrganizationEdit";
 import TripsUser from "./components/TripsUser";
+import TripsAll from "./components/TripsAll";
 import TripEdit from "./components/TripEdit";
 import TripsAdmin from "./components/TripsAdmin";
 import TripsSupervisor from "./components/TripsSupervisor";
@@ -29,6 +32,7 @@ import VehicleTypeCreate from "./components/VehicleTypeCreate";
 import VehicleTypeEdit from "./components/VehicleTypeEdit";
 import TripDriverView from "./components/TripDriverView";
 import UserEdit from "./components/UserEdit";
+import TripCompleteEdit from "./components/TripCompleteEdit";
 
 const Dashboard = () => <h2>Dashboard</h2>;
 const Admin = () => <h2>Admin</h2>;
@@ -49,11 +53,17 @@ class App extends Component {
             <Route path="/login" component={LoginForm} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/trips" exact component={TripsUser} />
+            <Route path="/trips/all" exact component={TripsAll} />
             <Route path="/trips/admin" exact component={TripsAdmin} />
+            <Route
+              path="/trips/admin/complete/:id"
+              component={TripCompleteEdit}
+            />
             <Route
               path="/trips/admin/arrange/:id"
               component={TripArrangeEdit}
             />
+
             <Route path="/trips/supervisor" exact component={TripsSupervisor} />
             <Route
               path="/trips/supervisor/approve/:id"
@@ -67,6 +77,12 @@ class App extends Component {
             <Route path="/users" exact component={Users} />
             <Route path="/users/add" component={UserCreate} />
             <Route path="/users/edit/:id" component={UserEdit} />
+            <Route path="/organizations" exact component={Organizations} />
+            <Route path="/organizations/add" component={OrganizationCreate} />
+            <Route
+              path="/organizations/edit/:id"
+              component={OrganizationEdit}
+            />
             <Route path="/vehicletypes" exact component={VehicleTypes} />
             <Route path="/vehicletypes/add" component={VehicleTypeCreate} />
             <Route path="/vehicletypes/edit/:id" component={VehicleTypeEdit} />

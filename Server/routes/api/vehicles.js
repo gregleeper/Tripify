@@ -74,7 +74,6 @@ router.get("/available/:id", [auth, admin], async (req, res) => {
   const availableVehicles = await Vehicle.find({
     _id: { $nin: conflictedVehiclesIdArray }
   });
-  console.log(availableVehicles);
   res.send(availableVehicles);
 });
 
@@ -82,8 +81,8 @@ router.get("/available/:id", [auth, admin], async (req, res) => {
 //@desc create a trip
 //@access Public
 router.post("/", [auth, admin], async (req, res) => {
-  console.log(req.body.vehicleTypeId);
-  const vehicleType = await VehicleType.findById(req.body.vehicleTypeId);
+  console.log(req.body.vehicleType);
+  const vehicleType = await VehicleType.findById(req.body.vehicleType);
   console.log(vehicleType);
   if (!vehicleType) return res.status(400).send("Invalid vehicle type.");
 

@@ -21,6 +21,7 @@ class TripForm extends Component {
 
   componentDidMount() {
     this.props.fetchVehicleTypes();
+    this.props.fetchOrganizations();
     this.props.fetchSupervisors();
   }
 
@@ -62,8 +63,9 @@ class TripForm extends Component {
           onChange={onChange}
           defaultValue={defaultValue}
           timeFormat="hh:mm A"
-          format="MMM DD YYYY, hh:mm A"
+          format="MMM DD YYYY, h:mm A"
           time={showTime}
+          step={5}
         />
       </div>
     );
@@ -74,7 +76,7 @@ class TripForm extends Component {
   };
 
   render() {
-    const { vehicleTypes, supervisors } = this.props;
+    const { vehicleTypes, supervisors, organizations } = this.props;
     console.log(this.props.initialValues);
     return (
       <div>
@@ -139,10 +141,12 @@ class TripForm extends Component {
             component={Input}
           />
           <Field //need to * implement organization types so can be select component
-            type="text"
             name="organization"
-            label="Organization"
-            component={Input}
+            component={this.renderDropdownList}
+            data={organizations}
+            label="Choose Organization"
+            valueField="_id"
+            textField="name"
           />
           <Field
             type="text"
@@ -252,6 +256,7 @@ function validate(values) {
 const mapStateToProps = (state, ownProps) => {
   return {
     vehicleTypes: Object.values(state.vehicleTypes),
+    organizations: Object.values(state.organizations),
     vehicles: Object.values(state.vehicles),
     supervisors: state.supervisors,
     trip: ownProps.initialValues,

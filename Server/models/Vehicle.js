@@ -40,20 +40,6 @@ const vehicleSchema = new Schema({
   driverNeeded: {
     type: Boolean,
     default: false
-  },
-  driver: {
-    type: new Schema({
-      name: {
-        type: String,
-        minlength: 5,
-        maxlength: 50
-      },
-      email: {
-        type: String,
-        minlength: 5,
-        maxlength: 100
-      }
-    })
   }
 });
 const Vehicle = mongoose.model("Vehicle", vehicleSchema);

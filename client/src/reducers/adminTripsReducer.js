@@ -1,7 +1,8 @@
 import {
   FETCH_ADMIN_TRIP,
   FETCH_ADMIN_TRIPS,
-  ARRANGE_TRIP
+  ARRANGE_TRIP,
+  COMPLETE_TRIP
 } from "../actions/types";
 import _ from "lodash";
 
@@ -12,6 +13,8 @@ export default (state = {}, action) => {
     case FETCH_ADMIN_TRIP:
       return { ...state, [action.payload._id]: action.payload };
     case ARRANGE_TRIP:
+      return { ...state, [action.payload._id]: action.payload };
+    case COMPLETE_TRIP:
       return { ...state, [action.payload._id]: action.payload };
     default:
       return state;

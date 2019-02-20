@@ -13,7 +13,13 @@ const tripSchema = new mongoose.Schema({
   departTime: Date,
   returnTime: Date,
   departureLocation: String,
-  organization: String,
+  organization: {
+    type: new mongoose.Schema({
+      name: {
+        type: String
+      }
+    })
+  },
   distance: Number,
   cost: Number,
   occupants: Number,
@@ -50,6 +56,10 @@ const tripSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  isComplete: {
+    type: Boolean,
+    default: false
+  },
   supervisor: {
     type: new mongoose.Schema({
       name: {
@@ -68,6 +78,7 @@ const tripSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  miles: { type: Array, default: [] },
   drivers: [userSchema],
   vehicles: [vehicleSchema]
 });
@@ -106,10 +117,8 @@ function validateTrip(trip) {
     isArranged: Joi.boolean(),
     isApproved: Joi.boolean(),
     isDenied: Joi.boolean(),
-    organization: Joi.string()
-      .min(1)
-      .max(50),
-    vehicles: Joi.array()
+    isComplete: Joi.boolean(),
+    organization: Joi.object()
   };
 
   return Joi.validate(trip, schema);

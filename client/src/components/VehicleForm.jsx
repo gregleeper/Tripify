@@ -90,7 +90,8 @@ class VehicleForm extends Component {
             <label>Vehicle Type</label>
             <Field
               data={vehicleTypes}
-              valueField="vehicleTypeId"
+              name="vehicleType"
+              valueField="_id"
               textField="name"
               label="Vehicle Type"
               component={this.renderDropdownList}

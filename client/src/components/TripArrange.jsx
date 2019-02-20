@@ -66,6 +66,7 @@ class TripArrange extends Component {
               defaultValue=""
               valueField="_id"
               textField="name"
+              style={{ marginLeft: "20%", marginRight: "20%" }}
             />
           </li>
         ))}
@@ -156,7 +157,7 @@ class TripArrange extends Component {
                   <dt className="mt-4">Physical Address: </dt>
                   <dd>{trip.physicalAddress}</dd>
                   <dt className="mt-4">Organization: </dt>
-                  <dd>{trip.organization}</dd>
+                  <dd>{trip.organization.name}</dd>
                   <dt className="mt-4">Number of Primary Vehicles: </dt>
                   <dd>{trip.numberOfPrimaryVehicles}</dd>
                   <dt className="mt-4">Number of Support Vehicles Needed: </dt>

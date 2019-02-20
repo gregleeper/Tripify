@@ -3,7 +3,7 @@ import React from "react";
 const Dropdown = ({ label, items, onItemSelect, selectedItem, ...rest }) => {
   console.log(items);
   return (
-    <div className="dropdown">
+    <div className="dropdown" style={{ marginLeft: "20%", marginRight: "20%" }}>
       <button
         className="btn btn-secondary dropdown-toggle"
         type="button"

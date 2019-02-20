@@ -14,6 +14,7 @@ class UserForm extends Component {
   };
 
   onSubmit = values => {
+    console.log("submitted");
     this.props.onSubmit(values);
   };
 

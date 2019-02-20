@@ -77,7 +77,6 @@ router.get("/available/:id", [auth, admin], async (req, res) => {
   const availableDrivers = await User.find({
     $and: [{ _id: { $nin: conflictedDriversIdArray } }, { isDriver: true }]
   });
-  console.log(availableDrivers);
   res.send(availableDrivers);
 });
 

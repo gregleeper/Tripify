@@ -17,6 +17,7 @@ import {
   FETCH_USERS,
   DELETE_USER,
   ARRANGE_TRIP,
+  COMPLETE_TRIP,
   DELETE_TRIP,
   CREATE_TRIP,
   EDIT_TRIP,
@@ -29,10 +30,16 @@ import {
   FETCH_DRIVER_TRIP,
   APPROVE_TRIP,
   FETCH_USER_TRIPS,
+  FETCH_ORGANIZATION,
+  FETCH_ORGANIZATIONS,
+  EDIT_ORGANIZATION,
+  CREATE_ORGANIZATION,
+  DELETE_ORGANIZATION,
   FETCH_SUPERVISORS,
   FETCH_DRIVERS,
   FETCH_AVAILABLE_DRIVERS,
-  FETCH_AVAILABLE_VEHICLES
+  FETCH_AVAILABLE_VEHICLES,
+  FETCH_ALL_TRIPS
 } from "./types";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
@@ -52,7 +59,14 @@ export const approveTrip = (id, values) => async dispatch => {
   dispatch({ type: APPROVE_TRIP, payload: response.data });
 };
 
+export const completeTrip = (id, values) => async dispatch => {
+  console.log(values);
+  const response = await axios.put(`/api/trips/admin/complete/${id}`, values);
+  dispatch({ type: COMPLETE_TRIP, payload: response.data });
+};
+
 export const createTrip = values => async (dispatch, getState) => {
+  console.log(values);
   const response = await axios.post("/api/trips", values);
   console.log(response);
   dispatch({ type: CREATE_TRIP, payload: response.data });
@@ -82,6 +96,7 @@ export const fetchTrip = id => {
 
 export const fetchAdminTrip = id => {
   return async dispatch => {
+    console.log(id);
     const response = await axios.get(`/api/trips/admin/${id}`);
     dispatch({ type: FETCH_ADMIN_TRIP, payload: response.data });
   };
@@ -99,6 +114,11 @@ export const fetchAdminTrips = () => {
     const response = await axios.get("/api/trips/admin");
     dispatch({ type: FETCH_ADMIN_TRIPS, payload: response.data });
   };
+};
+
+export const fetchAllTrips = () => async dispatch => {
+  const response = await axios.get("/api/trips/all");
+  dispatch({ type: FETCH_ALL_TRIPS, payload: response.data });
 };
 
 export const fetchSupTrips = () => async dispatch => {
@@ -171,7 +191,7 @@ export const fetchUser = id => {
 
 export const createUser = values => {
   return async dispatch => {
-    console.log();
+    console.log(values);
     const response = await axios.post("/api/users/", values);
     console.log(response);
     dispatch({ type: CREATE_USER, payload: response.data });
@@ -196,18 +216,16 @@ export const deleteUser = id => {
 
 export const fetchSupervisors = () => {
   return async dispatch => {
-    const response = await axios.get("/api/users");
-    const supervisors = response.data.filter(sup => sup.isSupervisor === true);
-    dispatch({ type: FETCH_SUPERVISORS, payload: supervisors });
+    const response = await axios.get("/api/users/supervisors");
+    dispatch({ type: FETCH_SUPERVISORS, payload: response.data });
   };
 };
 
 // Drivers Action Creator
 export const fetchDrivers = () => {
   return async dispatch => {
-    const response = await axios.get("/api/users");
-    const drivers = response.data.filter(user => user.isDriver === true);
-    dispatch({ type: FETCH_DRIVERS, payload: drivers });
+    const response = await axios.get("/api/users/drivers");
+    dispatch({ type: FETCH_DRIVERS, payload: response.data });
   };
 };
 
@@ -308,5 +326,41 @@ export const fetchTypesForVehiclePage = () => {
       type: FETCH_VEHICLE_TYPES_4_VEHICLES_PAGE,
       payload: response.data
     });
+  };
+};
+
+// Organizations action creators
+export const fetchOrganizations = () => {
+  return async dispatch => {
+    const response = await axios.get("/api/organizations");
+    dispatch({ type: FETCH_ORGANIZATIONS, payload: response.data });
+  };
+};
+
+export const fetchOrganization = id => {
+  return async dispatch => {
+    const response = await axios.get(`/api/organizations/${id}`);
+    dispatch({ type: FETCH_ORGANIZATION, payload: response.data });
+  };
+};
+
+export const editOrganization = (id, values) => {
+  return async dispatch => {
+    const response = await axios.put(`/api/organizations/${id}`, values);
+    dispatch({ type: EDIT_ORGANIZATION, payload: response.data });
+  };
+};
+
+export const createOrganization = values => {
+  return async dispatch => {
+    const response = await axios.post("/api/organizations", values);
+    dispatch({ type: CREATE_ORGANIZATION, payload: response.data });
+  };
+};
+
+export const deleteOrganization = id => {
+  return async dispatch => {
+    await axios.delete(`/api/organizations/${id}`);
+    dispatch({ type: DELETE_ORGANIZATION, payload: id });
   };
 };

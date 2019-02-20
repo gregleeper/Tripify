@@ -2,10 +2,10 @@ const express = require("express");
 const auth = require("../../middleware/auth");
 const admin = require("../../middleware/admin");
 const { User } = require("../../models/User");
-const { Vehicle } = require("../../models/Vehicle");
+const { Organization } = require("../../models/Organization");
 const { VehicleType } = require("../../models/VehicleType");
 const { Trip, validate } = require("../../models/Trip");
-const mongoose = require("mongoose");
+const _ = require("lodash");
 const router = express.Router();
 
 // Trip Model
@@ -15,10 +15,17 @@ const router = express.Router();
 //@access Private
 router.get("/", auth, async (req, res) => {
   const me = await User.findById(req.user._id);
-  console.log(me);
   const trips = await Trip.find({ "tripOwner._id": me }).sort({
     departTime: -1
   });
+  res.send(trips);
+});
+
+//@route GET api/trips/all
+//@desc get all trips for all users
+//@access Public
+router.get("/all", auth, async (req, res) => {
+  const trips = await Trip.find().sort({ departTime: -1 });
   res.send(trips);
 });
 
@@ -55,23 +62,24 @@ router.get("/:id", auth, async (req, res) => {
   res.send(trip);
 });
 
-//@route GET api/trips/admin/:id
-//@desc get a trip
-//@access Private
-router.get("/admin/:id", [auth, admin], async (req, res) => {
-  const trip = await Trip.findById(req.params.id)
-    .and({ "tripOwner.id": me })
-    .select("-__v");
-  if (!trip)
-    return res.status(404).send("The trip with the given id was not found.");
+// //@route GET api/trips/admin/:id
+// //@desc get a trip
+// //@access Private
+// router.get("/admin/:id", [auth, admin], async (req, res) => {
+//   const trip = await Trip.findById(req.params.id)
+//     .and({ "tripOwner.id": me })
+//     .select("-__v");
+//   if (!trip)
+//     return res.status(404).send("The trip with the given id was not found.");
 
-  res.send(trip);
-});
+//   res.send(trip);
+// });
 
 //@route POST api/trips
 //@desc create a trip
 //@access Public
 router.post("/", auth, async (req, res) => {
+  console.log(req.body);
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -86,6 +94,11 @@ router.post("/", auth, async (req, res) => {
   });
   if (!vehicleType) return res.status(400).send("Invalid vehicle type id");
 
+  const organization = await Organization.findOne({
+    _id: req.body.organization
+  });
+  if (!organization) return res.status(400).send("Invalid organization id");
+
   let trip = new Trip({
     title: req.body.title,
     destination: req.body.destination,
@@ -95,7 +108,10 @@ router.post("/", auth, async (req, res) => {
     occupants: req.body.occupants,
     departureLocation: req.body.departureLocation,
     isApproved: req.body.isApproved,
-    organization: req.body.organization,
+    organization: {
+      _id: organization._id,
+      name: organization.name
+    },
     tripOwner: {
       _id: tripOwner._id,
       name: tripOwner.name,
@@ -119,10 +135,12 @@ router.post("/", auth, async (req, res) => {
     comments: req.body.comments
   });
   await trip.save();
+  console.log(trip);
   res.send(trip);
 });
 
 router.put("/admin/:id", [auth, admin], async (req, res) => {
+  console.log(req.body);
   const trip = await Trip.findByIdAndUpdate(req.params.id, {
     $set: {
       distance: req.body.distance,
@@ -134,6 +152,18 @@ router.put("/admin/:id", [auth, admin], async (req, res) => {
   });
   if (!trip)
     return res.status(404).send("The trip with given Id was not found.");
+  res.send(trip);
+});
+
+router.put("/admin/complete/:id", [auth, admin], async (req, res) => {
+  const trip = await Trip.findByIdAndUpdate(req.params.id, {
+    $set: {
+      isComplete: true,
+      miles: req.body.miles
+    }
+  });
+  if (!trip) res.status(404).send("The trip with given Id was not found.");
+  console.log(trip);
   res.send(trip);
 });
 

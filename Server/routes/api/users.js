@@ -6,13 +6,28 @@ const _ = require("lodash");
 const router = express.Router();
 const { User, validate } = require("../../models/User");
 
-// Trip Model
 //@route GET api/users
 //@desc get all users
-//@access Public
+//@access Admin
 router.get("/", [auth, admin], async (req, res) => {
   const users = await User.find().sort({ name: 1 });
   res.send(users);
+});
+
+//@route GET api/users/supervisors
+//@desc get all users who are supervisors
+//@access Public
+router.get("/supervisors", auth, async (req, res) => {
+  const supervisors = await User.find({ isSupervisor: true }).sort({ name: 1 });
+  res.send(supervisors);
+});
+
+//@route GET api/users/drivers
+//@desc get all users who are drivers
+//@access Public
+router.get("/drivers", auth, async (req, res) => {
+  const drivers = await User.find({ isDriver: true }).sort({ name: 1 });
+  res.send(drivers);
 });
 
 //@route GET api/users/me
